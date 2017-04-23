@@ -8,7 +8,11 @@ def getUserInbox(user):
 
 	inbox = dir+user+"/inbox/"
 	usrmsg = []
-	for email in os.listdir(inbox):
+	try:
+		listd = os.listdir(inbox)
+	except:
+		return usrmsg
+	for email in listd:
 		msg = {}
 		try:
 			f = open(inbox+email,'r')
@@ -33,7 +37,10 @@ def getUserInbox(user):
 			elif "Subject:" in lines[i]:
 				msg['Subject'] = lines[i].split("Subject: ")[1]
 			elif "\t" in lines[i]:
-				msg['To'] = msg['To'] + lines[i].split("\t")[1]
+				try:
+					msg['To'] = msg['To'] + lines[i].split("\t")[1]
+				except:
+					break
 			
 			i+=1
 		while True:
@@ -88,6 +95,3 @@ def getUserOutbox(user):
 		#print(content)
 	return usrmsg
 	
-inb = getUserOutbox("arnold-j")
-for msg in inb:
-	print(msg)
